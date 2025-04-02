@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.flashcardapp.R
+import com.example.flashcardapp.data.SettingsDataStore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +38,18 @@ fun StartScreen(
     context: Context,
     onFixAndUpdateButtonClick: () -> Unit
 ) {
+    val settingsDataStore = remember { SettingsDataStore(context) }
     var menuExpanded by remember { mutableStateOf(false) }
+
+    var selectedOption by remember { mutableStateOf("Хоёуланг нь ил харуулах") }
+
+    // DataStore-оос тохиргооны утга унших
+    LaunchedEffect(Unit) {
+        settingsDataStore.selectedOptionFlow.collect { option ->
+            selectedOption = option
+        }
+    }
+
     Scaffold(
         content = { paddingValues ->
             Column(
@@ -47,11 +59,18 @@ fun StartScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
+                val wordEnglish = "Apple"
+                val wordMongolian = "Алим"
+
                 Row(
                     modifier = Modifier
                         .padding(top = 25.dp)
                 ){
-                    OneTextInput("Bataa", false)
+                    when (selectedOption) {
+                        "Гадаад үгийг ил харуулах" -> OneTextInput("Bataa", false)
+                        "Монгол үгийг ил харуулах" -> OneTextInput("Bataa", true)
+                        else -> OneTextInput("Bataa", false)
+                    }
                 }
                 Row (
                     modifier = Modifier
@@ -118,10 +137,10 @@ fun StartScreen(
 }
 
 @Composable
-fun OneTextInput(string: String, boolean: Boolean) {
+fun OneTextInput(utga: String, boolean: Boolean) {
     var text by remember { mutableStateOf("") }
     OutlinedTextField(
-        value = text,
+        value = if(utga == "") text else utga,
         onValueChange = { text = it },
         label = { Text(if (boolean) "MN" else "EN") },
         placeholder = { Text("Оруулна уу") },

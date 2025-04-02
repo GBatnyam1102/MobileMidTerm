@@ -1,6 +1,7 @@
 package com.example.flashcardapp
 
 import StartScreen
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Constraints
 import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
@@ -82,7 +85,9 @@ fun AppNavigation() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(FlashCardScreens.Start.name) {
+                val context = LocalContext.current
                 StartScreen(
+                    context = context,
                     onFixAndUpdateButtonClick = {
                         navController.navigate(FlashCardScreens.FixAndUpdate.name)
                     }
@@ -96,7 +101,9 @@ fun AppNavigation() {
                 )
             }
             composable(FlashCardScreens.Settings.name) {
+                val context = LocalContext.current
                 RadioButtonScreen(
+                    context = context,
                     onBackAndSaveButtonClick = {
                         navController.navigate(FlashCardScreens.Start.name)
                     }
