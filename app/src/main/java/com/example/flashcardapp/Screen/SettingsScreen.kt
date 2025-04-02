@@ -8,10 +8,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import kotlinx.coroutines.launch
+
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.flashcardapp.data.SettingsDataStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 
 @Composable
@@ -67,7 +71,7 @@ fun RadioButtonScreen(
 
             Button(
                 onClick = {
-                    coroutineScope.launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         settingsDataStore.saveSelectedOption(selectedOption)
                     }
                     onBackAndSaveButtonClick()
