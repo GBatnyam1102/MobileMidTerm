@@ -34,7 +34,6 @@ import com.example.flashcardapp.data.SettingsDataStore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-////zasah ystoi logiciig
 fun StartScreen(
     context: Context,
     onFixAndUpdateButtonClick: () -> Unit
@@ -62,28 +61,25 @@ fun StartScreen(
             ) {
                 val wordEnglish = "Apple"
                 val wordMongolian = "Алим"
-
+                val word = listOf("Алим", "Apple")
+                val empty = listOf("", "")
                 //Gadaad ugg haruulna
-                Row(
-                    modifier = Modifier
-                        .padding(top = 25.dp)
-                ){
-                    when(selectedOption) {
-                        "Гадаад үгийг ил харуулах" -> OneTextInput(wordEnglish, false, false)
-                        "Монгол үгийг ил харуулах" -> OneTextInput("", true, false)
-                        else -> OneTextInput(wordEnglish, false, false)
-                    }
-                }
-
-                //mongol ug haruulah
-                Row (
-                    modifier = Modifier
-                        .padding(top = 25.dp)
-                ){
-                    when(selectedOption) {
-                        ("Гадаад үгийг ил харуулах") -> OneTextInput("", false, true)
-                        "Монгол үгийг ил харуулах" -> OneTextInput(wordMongolian, true, true)
-                        else -> OneTextInput(wordMongolian, false, true)
+                Column(
+                    modifier = Modifier.padding(top = 25.dp)
+                ) {
+                    when (selectedOption) {
+                        "Гадаад үгийг ил харуулах" -> {
+                            OneTextInput(word, false, false)
+                            OneTextInput(word, true, true)
+                        }
+                        "Монгол үгийг ил харуулах" -> {
+                            OneTextInput(word, true, false) // Гадаад үг нуувчтай байна
+                            OneTextInput(word, false, true) // Монгол үг ил харагдана
+                        }
+                        else -> {
+                            OneTextInput(word, false, false) // Аль аль нь харагдана
+                            OneTextInput(word, false, true)
+                        }
                     }
                 }
                 Row (modifier = Modifier
@@ -143,15 +139,20 @@ fun StartScreen(
         }
     )
 }
-
+//hidden logic zasna
 @Composable
-fun OneTextInput(utga: String, ishide: Boolean, ismongolia: Boolean) {
-    var text by remember { mutableStateOf("") }
+fun OneTextInput(utguud: List<String>, isHiddenInit: Boolean, ismongolia: Boolean) {
+    var isHidden by remember { mutableStateOf(isHiddenInit) } // Эхлээд нуусан эсэхийг хянах
+    val text = if (ismongolia) utguud[0] else utguud[1] // Монгол эсвэл Англи үг
+
     OutlinedTextField(
-        value = utga,
-        onValueChange = { text = it },
-        label = { Text(if(ismongolia) "MN" else "EN") },
-        placeholder = { Text("Оруулна уу") },
+        value = if (isHidden) "" else text, // Хэрэв нуусан бол хоосон байна
+        onValueChange = {},
+        label = { Text(if (ismongolia) "MN" else "EN") },
+        placeholder = { Text(text) }, // Нуусан үед placeholder дээр үг харагдана
         shape = RoundedCornerShape(12.dp),
+        readOnly = true,
     )
 }
+
+
