@@ -34,6 +34,7 @@ import com.example.flashcardapp.data.SettingsDataStore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+////zasah ystoi logiciig
 fun StartScreen(
     context: Context,
     onFixAndUpdateButtonClick: () -> Unit
@@ -62,21 +63,28 @@ fun StartScreen(
                 val wordEnglish = "Apple"
                 val wordMongolian = "Алим"
 
+                //Gadaad ugg haruulna
                 Row(
                     modifier = Modifier
                         .padding(top = 25.dp)
                 ){
-                    when (selectedOption) {
-                        "Гадаад үгийг ил харуулах" -> OneTextInput("Bataa", false)
-                        "Монгол үгийг ил харуулах" -> OneTextInput("Bataa", true)
-                        else -> OneTextInput("Bataa", false)
+                    when(selectedOption) {
+                        "Гадаад үгийг ил харуулах" -> OneTextInput(wordEnglish, false, false)
+                        "Монгол үгийг ил харуулах" -> OneTextInput("", true, false)
+                        else -> OneTextInput(wordEnglish, false, false)
                     }
                 }
+
+                //mongol ug haruulah
                 Row (
                     modifier = Modifier
                         .padding(top = 25.dp)
                 ){
-                    OneTextInput("Ganaa", true)
+                    when(selectedOption) {
+                        ("Гадаад үгийг ил харуулах") -> OneTextInput("", false, true)
+                        "Монгол үгийг ил харуулах" -> OneTextInput(wordMongolian, true, true)
+                        else -> OneTextInput(wordMongolian, false, true)
+                    }
                 }
                 Row (modifier = Modifier
                     .padding(top = 16.dp)
@@ -137,12 +145,12 @@ fun StartScreen(
 }
 
 @Composable
-fun OneTextInput(utga: String, boolean: Boolean) {
+fun OneTextInput(utga: String, ishide: Boolean, ismongolia: Boolean) {
     var text by remember { mutableStateOf("") }
     OutlinedTextField(
-        value = if(utga == "") text else utga,
+        value = utga,
         onValueChange = { text = it },
-        label = { Text(if (boolean) "MN" else "EN") },
+        label = { Text(if(ismongolia) "MN" else "EN") },
         placeholder = { Text("Оруулна уу") },
         shape = RoundedCornerShape(12.dp),
     )
