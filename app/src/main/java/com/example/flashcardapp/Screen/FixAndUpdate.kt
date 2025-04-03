@@ -23,13 +23,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.flashcardapp.data.WordPair
+import com.example.flashcardapp.model.WordViewModel
+import com.example.flashcardapp.model.WordViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FixAndUpdateScreen(
+//    viewModel: WordViewModel = viewModel(),
     onInsertAndCancel: () -> Unit
 ) {
+    var englishWord by remember { mutableStateOf("") }
+    var mongolianWord by remember { mutableStateOf("") }
+
     Scaffold { contentPadding ->
         Column(
             modifier = Modifier
@@ -37,33 +45,39 @@ fun FixAndUpdateScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            InputTextField(true)
+            InputTextField(value = englishWord, onValueChange = { englishWord = it }, label = "EN")
             Spacer(modifier = Modifier.height(8.dp))
-            InputTextField(false)
+            InputTextField(value = mongolianWord, onValueChange = { mongolianWord = it }, label = "MN")
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Button(
-                    onClick = {onInsertAndCancel()},
+                    onClick = {
+//                        if (englishWord.isNotBlank() && mongolianWord.isNotBlank()) {
+//                            viewModel.insertWord(WordPair(mongolian = mongolianWord, english = englishWord))
+//                            onInsertAndCancel() // Амжилттай нэмсний дараа буцах
+//                        }
+                        onInsertAndCancel()
+                    },
                     colors = ButtonDefaults.buttonColors(Color(0xFFf07178))
                 ) { Text(text = "Оруулах") }
                 Button(
-                    onClick = {onInsertAndCancel()},
+                    onClick = { onInsertAndCancel() },
                     colors = ButtonDefaults.buttonColors(Color(0xFFf07178))
                 ) { Text(text = "Болих") }
             }
         }
     }
 }
+
 @Composable
-fun InputTextField(boolean: Boolean){
-    var text by remember { mutableStateOf("") }
+fun InputTextField(value: String, onValueChange: (String) -> Unit, label: String) {
     OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
-        placeholder = { Text(if(boolean) "Гадаад Үг" else "Монгол үг") },
+        value = value,
+        onValueChange = onValueChange,
+        placeholder = { Text(label) },
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.fillMaxWidth()
     )

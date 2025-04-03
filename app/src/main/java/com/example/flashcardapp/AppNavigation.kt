@@ -19,12 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.flashcardapp.Screen.FixAndUpdateScreen
 import com.example.flashcardapp.Screen.RadioButtonScreen
+import com.example.flashcardapp.model.WordViewModel
 
 enum class FlashCardScreens(@StringRes val title: Int) {
     Start(R.string.start),
@@ -74,7 +76,9 @@ fun FlashCardBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
+
     val navController = rememberNavController()
+//    val viewModel: WordViewModel = viewModel()
 
     Scaffold(
         topBar = { FlashCardBar(navController) }
@@ -87,6 +91,7 @@ fun AppNavigation() {
             composable(FlashCardScreens.Start.name) {
                 val context = LocalContext.current
                 StartScreen(
+//                    viewModel = viewModel,
                     context = context,
                     onFixAndUpdateButtonClick = {
                         navController.navigate(FlashCardScreens.FixAndUpdate.name)
@@ -95,6 +100,7 @@ fun AppNavigation() {
             }
             composable(FlashCardScreens.FixAndUpdate.name) {
                 FixAndUpdateScreen(
+//                    viewModel = viewModel,
                     onInsertAndCancel = {
                         navController.navigate(FlashCardScreens.Start.name)
                     }
@@ -103,6 +109,7 @@ fun AppNavigation() {
             composable(FlashCardScreens.Settings.name) {
                 val context = LocalContext.current
                 RadioButtonScreen(
+//                    viewModel = viewModel,
                     context = context,
                     onBackAndSaveButtonClick = {
                         navController.navigate(FlashCardScreens.Start.name)

@@ -28,13 +28,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.flashcardapp.R
 import com.example.flashcardapp.data.SettingsDataStore
+import com.example.flashcardapp.model.WordViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartScreen(
+//    viewModel: WordViewModel = viewModel(),
     context: Context,
     onFixAndUpdateButtonClick: () -> Unit
 ) {
@@ -43,6 +46,11 @@ fun StartScreen(
 
     var selectedOption by remember { mutableStateOf("Хоёуланг нь ил харуулах") }
 
+//    LaunchedEffect(Unit) {
+//        viewModel.getAllWords { words ->
+//            println(words) // Энд UI дээр харуулах код бичиж болно
+//        }
+//    }
     // DataStore-оос тохиргооны утга унших
     LaunchedEffect(Unit) {
         settingsDataStore.selectedOptionFlow.collect { option ->
@@ -59,11 +67,7 @@ fun StartScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                val wordEnglish = "Apple"
-                val wordMongolian = "Алим"
                 val word = listOf("Алим", "Apple")
-                val empty = listOf("", "")
-                //Gadaad ugg haruulna
                 Column(
                     modifier = Modifier.padding(top = 25.dp)
                 ) {
@@ -73,11 +77,11 @@ fun StartScreen(
                             OneTextInput(word, true, true)
                         }
                         "Монгол үгийг ил харуулах" -> {
-                            OneTextInput(word, true, false) // Гадаад үг нуувчтай байна
-                            OneTextInput(word, false, true) // Монгол үг ил харагдана
+                            OneTextInput(word, true, false)
+                            OneTextInput(word, false, true)
                         }
                         else -> {
-                            OneTextInput(word, false, false) // Аль аль нь харагдана
+                            OneTextInput(word, false, false)
                             OneTextInput(word, false, true)
                         }
                     }

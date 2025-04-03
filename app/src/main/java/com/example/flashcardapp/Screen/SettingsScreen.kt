@@ -12,14 +12,17 @@ import kotlinx.coroutines.launch
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.flashcardapp.data.SettingsDataStore
+import com.example.flashcardapp.model.WordViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun RadioButtonScreen(
+//    viewModel: WordViewModel = viewModel(),
     context: Context,
     onBackAndSaveButtonClick: () -> Unit
     ) {
